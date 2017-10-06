@@ -9,6 +9,14 @@ var cards = [...$('.deck').children()];
  *   - loop through each card and create its HTML
  *   - add each card's HTML to the page
  */
+ shuffle(cards);
+ for(card of cards) {
+   /*
+   TODO Change the card classes in the HTML so that they're not preset and instead
+   denote individual positions on the grid.
+
+   */
+ }
 
 // Shuffle function from http://stackoverflow.com/a/2450976
 function shuffle(array) {
