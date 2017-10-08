@@ -10,11 +10,11 @@ const cards = $('.deck').children();
  *   - add each card's HTML to the page
  */
 shuffle(cards);
-const shuffledCards = $(cards).children();
+const shuffledCards = [...cards];
 
 for(var i=0; i<cards.length; i++) {
-  $('.card-'+i).replaceWith(shuffledCards[i]);
-  $('.deck').children().addClass('card');
+  $('.card-'+i).after(shuffledCards[i]);
+  $('.card-'+i).addClass('card');
 }
 
 // Shuffle function from http://stackoverflow.com/a/2450976
@@ -42,6 +42,43 @@ function shuffle(array) {
  *    + increment the move counter and display it on the page (put this functionality in another function that you call from this one)
  *    + if all cards have matched, display a message with the final score (put this functionality in another function that you call from this one)
  */
- $('card').click(function() {
-   $(this).addClass('show');
+ let chosen = [];
+
+ function showCard(cardToShow) {
+   cardToShow.addClass('show');
+ }
+
+ function addOpen(chosenCard) {
+   chosen.push(chosenCard);
+ }
+
+ function setMatch() {
+   $(chosen[0]).addClass('match');
+   $(chosen[1]).addClass('match');
+   chosen.pop();
+   chosen.pop();
+ }
+
+ function noMatch() {
+   $(chosen[0]).removeClass('show');
+   $(chosen[1]).removeClass('show');
+   chosen.pop();
+   chosen.pop();
+ }
+
+ $('.card').click(function() {
+   showCard($(this));
+
+   if(chosen.length == 0 || chosen.length == 1) {
+     addOpen($(this));
+   }
+
+   if(chosen.length == 2) {
+     if(chosen[0] == chosen[1]) {
+       setMatch();
+     } else {
+       noMatch();
+     }
+   }
+
  });
