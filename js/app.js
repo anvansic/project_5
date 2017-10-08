@@ -1,7 +1,7 @@
 /*
  * Create a list that holds all of your cards
  */
-var cards = [...$('.deck').children()];
+const cards = $('.deck').children();
 
 /*
  * Display the cards on the page
@@ -9,14 +9,13 @@ var cards = [...$('.deck').children()];
  *   - loop through each card and create its HTML
  *   - add each card's HTML to the page
  */
- shuffle(cards);
- for(card of cards) {
-   /*
-   TODO Change the card classes in the HTML so that they're not preset and instead
-   denote individual positions on the grid.
+shuffle(cards);
+const shuffledCards = $(cards).children();
 
-   */
- }
+for(var i=0; i<cards.length; i++) {
+  $('.card-'+i).replaceWith(shuffledCards[i]);
+  $('.deck').children().addClass('card');
+}
 
 // Shuffle function from http://stackoverflow.com/a/2450976
 function shuffle(array) {
@@ -33,7 +32,6 @@ function shuffle(array) {
     return array;
 }
 
-
 /*
  * set up the event listener for a card. If a card is clicked:
  *  - display the card's symbol (put this functionality in another function that you call from this one)
@@ -44,3 +42,6 @@ function shuffle(array) {
  *    + increment the move counter and display it on the page (put this functionality in another function that you call from this one)
  *    + if all cards have matched, display a message with the final score (put this functionality in another function that you call from this one)
  */
+ $('card').click(function() {
+   $(this).addClass('show');
+ });
