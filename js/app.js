@@ -43,6 +43,7 @@ function shuffle(array) {
  *    + if all cards have matched, display a message with the final score (put this functionality in another function that you call from this one)
  */
  let chosen = [];
+ let clickDisabled = false;
 
  function showCard(cardToShow) {
    cardToShow.addClass('show');
@@ -64,9 +65,12 @@ function shuffle(array) {
    $(chosen[1]).removeClass('show');
    chosen.pop();
    chosen.pop();
+   clickDisabled = false;
  }
 
  $('.card').click(function() {
+   if(clickDisabled) {return;}
+
    showCard($(this));
 
    if(chosen.length == 0 || chosen.length == 1) {
@@ -74,10 +78,11 @@ function shuffle(array) {
    }
 
    if(chosen.length == 2) {
-     if(chosen[0] == chosen[1]) {
+     if(chosen[0].find('i') == chosen[1].find('i')) {
        setMatch();
      } else {
-       noMatch();
+       clickDisabled = true;
+       window.setTimeout(noMatch, 500);
      }
    }
 
