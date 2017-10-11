@@ -44,12 +44,18 @@ function shuffle(array) {
  */
  let chosen = [];
  let clickDisabled = false;
+ let movesCount = 1;
 
  function showCard(cardToShow) {
    cardToShow.addClass('show');
  }
 
  function addOpen(chosenCard) {
+   if(chosen[0]) {
+     if(chosenCard.attr('class') == chosen[0].attr('class')) {
+       return;
+     }
+   }
    chosen.push(chosenCard);
  }
 
@@ -58,6 +64,7 @@ function shuffle(array) {
    $(chosen[1]).addClass('match');
    chosen.pop();
    chosen.pop();
+   clickDisabled = false;
  }
 
  function noMatch() {
@@ -68,22 +75,32 @@ function shuffle(array) {
    clickDisabled = false;
  }
 
+ function setMovesCount() {
+   $('.moves').text(movesCount++);
+ }
+
+//When a card is clicked, the following will occur
  $('.card').click(function() {
+   //This prevents the player from opening additional cards until failed matches are re-hidden.
    if(clickDisabled) {return;}
 
+   //The card is shown, or "flipped over".
    showCard($(this));
 
-   if(chosen.length == 0 || chosen.length == 1) {
-     addOpen($(this));
-   }
+   //The card is added to the list of open cards in the chosen[] array.
+   //Note: Within the addOpen() function the card is checked to prevent the player from adding the same card to the chosen[] array, thus eliminating the risk of matching cards with themselves.
+   addOpen($(this));
 
+   //Once two cards are opened, their child elements' class values are evaluated. If they match, setMatch adds 'match' to their classes; if not, they lose their 'show' classes. In both cases, the chosen[] array is cleared.
    if(chosen.length == 2) {
-     if(chosen[0].find('i') == chosen[1].find('i')) {
+     if(chosen[0].children().attr('class') == chosen[1].children().attr('class')) {
        setMatch();
      } else {
        clickDisabled = true;
+       //setTimeout gives the player some time to see the values of the incorrectly matched cards before being flipped back over. Within noMatch() the clickDisabled flag is reset so that the player may start checking cards again.
        window.setTimeout(noMatch, 500);
      }
+     setMovesCount();
    }
 
  });
